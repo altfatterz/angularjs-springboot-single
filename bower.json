@@ -9,7 +9,7 @@
   "homepage": "http://altfatterz.blogspot.nl/",
   "private": true,
   "dependencies": {
-    "angular-cookie": "~4.0.6",
+    "angular": "~1.3.12",
     "angular-route": "~1.3.12",
     "bootstrap": "~3.3.2"
   }
