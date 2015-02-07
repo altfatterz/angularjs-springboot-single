@@ -1,0 +1,16 @@
+{
+  "name": "angularjs-springboot-single",
+  "version": "0.0.1-SNAPSHOT",
+  "authors": [
+    "Zoltan Altfatter <altfatterz@gmail.com>"
+  ],
+  "description": "AngularJS with Spring Boot form login authentication",
+  "license": "ASL",
+  "homepage": "http://altfatterz.blogspot.nl/",
+  "private": true,
+  "dependencies": {
+    "angular-cookie": "~4.0.6",
+    "angular-route": "~1.3.12",
+    "bootstrap": "~3.3.2"
+  }
+}
