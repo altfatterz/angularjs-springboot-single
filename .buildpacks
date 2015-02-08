@@ -1,2 +1,3 @@
-https://github.com/heroku/heroku-buildpack-nodejs
-https://github.com/heroku/heroku-buildpack-gradle
+https://github.com/heroku/heroku-buildpack-nodejs#v70
+https://github.com/heroku/heroku-buildpack-gradle#v12
+
