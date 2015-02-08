@@ -7,7 +7,7 @@
     "bower": "~1.3.12"
   },
   "scripts": {
-    "postinstall": "bower install"
+    "postinstall": "bower install && ./gradlew build"
   },
   "private": true
 }
