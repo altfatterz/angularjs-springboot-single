@@ -1,0 +1,11 @@
+{
+  "name": "angularjs-springboot-single",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "AngularJS with Spring Boot form login authentication",
+  "scripts": {
+    "postinstall": "bower install && ./gradlew build"
+  },
+  "author": "Zoltan Altfatter <altfatterz@gmail.com>",
+  "license": "ASL",
+  "private": true
+}
