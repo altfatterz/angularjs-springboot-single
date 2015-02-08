@@ -54,11 +54,24 @@ public class UiApplication {
     protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.formLogin().and().logout().and().authorizeRequests()
-                    .antMatchers("/index.html", "/home.html", "/login.html", "/", "/bower_components/**").permitAll().anyRequest()
-                    .authenticated().and().csrf()
-                    .csrfTokenRepository(csrfTokenRepository()).and()
-                    .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+
+            http
+                    .authorizeRequests()
+                        .antMatchers("/", "/home.html", "/index.html", "/login.html", "/bower_components/**").permitAll()
+                        .anyRequest().authenticated()
+                        .and()
+                    .formLogin()
+                        .permitAll()
+                        .and()
+                    .logout()
+                        .permitAll();
+
+            http
+                    .csrf()
+                        .csrfTokenRepository(csrfTokenRepository())
+                    .and()
+                        .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+
         }
 
         private Filter csrfHeaderFilter() {
@@ -67,14 +80,14 @@ public class UiApplication {
                 protected void doFilterInternal(HttpServletRequest request,
                                                 HttpServletResponse response, FilterChain filterChain)
                         throws ServletException, IOException {
-                    CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class
-                            .getName());
+                    CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
                     if (csrf != null) {
                         Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
                         String token = csrf.getToken();
-                        if (cookie == null || token != null
-                                && !token.equals(cookie.getValue())) {
+                        if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                             cookie = new Cookie("XSRF-TOKEN", token);
+
+                            // set this to context-path instead to hard coding it to '/'
                             cookie.setPath("/");
                             response.addCookie(cookie);
                         }
@@ -89,6 +102,8 @@ public class UiApplication {
             repository.setHeaderName("X-XSRF-TOKEN");
             return repository;
         }
+
+
     }
 
 }
