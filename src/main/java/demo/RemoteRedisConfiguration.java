@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 @Production
 @Configuration
 @EnableRedisHttpSession
-public class ProductionRedisConfiguration {
+public class RemoteRedisConfiguration {
 
     @Bean
     public JedisConnectionFactory connectionFactory() throws URISyntaxException {
@@ -28,7 +28,7 @@ public class ProductionRedisConfiguration {
 
     static class Initializer  extends AbstractHttpSessionApplicationInitializer {
         public Initializer() {
-            super(ProductionRedisConfiguration.class);
+            super(RemoteRedisConfiguration.class);
         }
     }
 
