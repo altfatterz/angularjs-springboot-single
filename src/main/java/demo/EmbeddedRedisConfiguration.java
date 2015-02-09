@@ -16,6 +16,7 @@ import redis.embedded.RedisServer;
 
 @Configuration
 @EnableRedisHttpSession
+@Development
 public class EmbeddedRedisConfiguration {
 
     @Bean
