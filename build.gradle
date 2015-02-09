@@ -22,12 +22,22 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url 'http://clojars.org/repo' }
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    compile("org.springframework.session:spring-session-data-redis:1.0.0.RELEASE")
+    // include spring-tx and spring-context-support explicitly since spring-session-data-redis pulls in spring 3.2.9 dependencies
+    compile("org.springframework:spring-tx")
+    compile("org.springframework:spring-context-support")
+    compile("org.springframework.data:spring-data-redis")
+
+    compile("redis.embedded:embedded-redis:0.3")
+
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.apache.httpcomponents:httpclient")
