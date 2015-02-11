@@ -36,7 +36,9 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
 
         $scope.credentials = {};
         $scope.login = function() {
-            $http.post('login', $.param($scope.credentials), {
+            var data = 'username=' + $scope.credentials.username + '&password=' + $scope.credentials.password +
+                    '&remember-me=' + $scope.rememberMe;
+            $http.post('login', data, {
                 headers : {
                     "content-type" : "application/x-www-form-urlencoded"
                 }
