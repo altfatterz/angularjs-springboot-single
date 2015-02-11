@@ -60,7 +60,7 @@ public class UiApplication {
         public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
             auth
                     .inMemoryAuthentication()
-                    .withUser("zoltan").password("secret").roles("USER");
+                    .withUser("zoltan").password("secret").roles("USER", "ADMIN");
         }
 
         @Override
