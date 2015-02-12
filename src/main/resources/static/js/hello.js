@@ -6,6 +6,9 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
     }).when('/login', {
         templateUrl : 'login.html',
         controller : 'navigation'
+    }).when('/begin_password_recovery', {
+        templateUrl : 'email.html',
+        controller : 'PasswordRecoveryController'
     }).otherwise('/');
 
 }).controller('navigation',
@@ -78,4 +81,10 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
         $http.get('/resource/').success(function(data) {
             $scope.greeting = data;
         })
+    }).controller('PasswordRecoveryController',
+
+        function($scope, $http) {
+            $scope.recover_password = function() {
+                console.log("Sending email address from PasswordRecoveryController");
+            }
     });
