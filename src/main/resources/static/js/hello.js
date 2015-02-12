@@ -84,7 +84,13 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
     }).controller('PasswordRecoveryController',
 
         function($scope, $http) {
-            $scope.recover_password = function() {
+
+            $scope.passwordRecovery = {};
+
+            $scope.recoverPassword = function() {
+                $scope.passwordRecovery.showConfirmationMessage = true;
+
+                $scope.passwordRecovery.email = '';
                 console.log("Sending email address from PasswordRecoveryController");
             }
     });

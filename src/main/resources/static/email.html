@@ -1,7 +1,10 @@
-<form role="form" ng-submit="recover_password()">
+<div class="alert alert-success" role="alert" ng-show="passwordRecovery.showConfirmationMessage">
+    Thanks, if the email address you entered is correct, you will be receiving an email shortly with instructions on how to reset your password.
+</div>
+<form role="form" ng-submit="recoverPassword()">
     <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" ng-model="email" required />
+        <input type="email" class="form-control" id="email" name="email" ng-model="passwordRecovery.email" required />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
