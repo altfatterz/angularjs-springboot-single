@@ -13,6 +13,9 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,6 +32,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @SpringBootApplication
 @RestController
@@ -66,9 +70,10 @@ public class UiApplication {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
+
             http
                     .authorizeRequests()
-                    .antMatchers("/", "/home.html", "/index.html", "/login.html", "/email.html", "/passwordRecovery", "/bower_components/**").permitAll()
+                    .antMatchers("/", "/home.html", "/index.html", "/login.html", "/email.html", "/v1/**", "/bower_components/**").permitAll()
                         .anyRequest().authenticated()
                     .and()
                     .formLogin()
@@ -77,10 +82,11 @@ public class UiApplication {
                     .logout()
                         .permitAll()
                     .and()
-                    .rememberMe();
+                        .rememberMe();
 
             http
                     .csrf()
+                        .requireCsrfProtectionMatcher(new CustomRequestMatcher())
                         .csrfTokenRepository(csrfTokenRepository())
                     .and()
                         .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
@@ -116,6 +122,28 @@ public class UiApplication {
             return repository;
         }
 
+
+        static class CustomRequestMatcher implements RequestMatcher {
+
+            @Override
+            public boolean matches(HttpServletRequest request) {
+                Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE|OPTIONS)$");
+                RegexRequestMatcher apiMatcher = new RegexRequestMatcher("/v[0-9]*/.*", null);
+
+                // No CSRF due to allowedMethod
+                if(allowedMethods.matcher(request.getMethod()).matches()) {
+                    return false;
+                }
+
+                // No CSRF due to api call
+                if(apiMatcher.matches(request)) {
+                    return false;
+                }
+
+                // CSRF for everything else that is not an API call or an allowedMethod
+                return true;
+            }
+        }
 
     }
 
