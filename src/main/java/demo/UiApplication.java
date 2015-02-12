@@ -68,7 +68,7 @@ public class UiApplication {
 
             http
                     .authorizeRequests()
-                    .antMatchers("/", "/home.html", "/index.html", "/login.html", "/email.html", "/bower_components/**").permitAll()
+                    .antMatchers("/", "/home.html", "/index.html", "/login.html", "/email.html", "/passwordRecovery", "/bower_components/**").permitAll()
                         .anyRequest().authenticated()
                     .and()
                     .formLogin()
@@ -77,7 +77,7 @@ public class UiApplication {
                     .logout()
                         .permitAll()
                     .and()
-                        .rememberMe();
+                    .rememberMe();
 
             http
                     .csrf()
