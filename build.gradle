@@ -29,6 +29,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-mail")
 
     compile("org.springframework.session:spring-session-data-redis:1.0.0.RELEASE")
     // include spring-tx and spring-context-support explicitly since spring-session-data-redis pulls in spring 3.2.9 dependencies
