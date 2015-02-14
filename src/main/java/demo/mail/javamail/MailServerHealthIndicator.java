@@ -9,12 +9,10 @@ import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
-import java.util.Properties;
-
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import java.util.Properties;
 
 @Component
 public class MailServerHealthIndicator  extends AbstractHealthIndicator {
@@ -35,8 +33,8 @@ public class MailServerHealthIndicator  extends AbstractHealthIndicator {
 
         Session session = Session.getInstance(properties, null);
         try {
-            Transport transport = getTransport(session);
-            transport.connect(mailProperties.getHost(), getPort(), mailProperties.getUsername(), mailProperties.getPassword());
+            Transport transport = session.getTransport(JavaMailSenderImpl.DEFAULT_PROTOCOL);
+            transport.connect(mailProperties.getHost(), mailProperties.getPort(), mailProperties.getUsername(), mailProperties.getPassword());
             transport.close();
 
             builder.up();
@@ -44,23 +42,6 @@ public class MailServerHealthIndicator  extends AbstractHealthIndicator {
             LOGGER.error("JavaMail connection is down", e);
             builder.down(e);
         }
-    }
-
-    private int getPort() {
-        Integer port = mailProperties.getPort();
-        if (port == null) {
-            port = JavaMailSenderImpl.DEFAULT_PORT;
-        }
-        return port;
-    }
-
-    private Transport getTransport(Session session) throws NoSuchProviderException {
-        String protocol	= session.getProperty("mail.transport.protocol");
-        if (protocol == null) {
-            protocol = JavaMailSenderImpl.DEFAULT_PROTOCOL;
-        }
-
-        return session.getTransport(protocol);
     }
 
 }
