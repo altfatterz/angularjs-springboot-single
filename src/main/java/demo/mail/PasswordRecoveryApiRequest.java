@@ -3,10 +3,11 @@ package demo.mail;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class PasswordRecoveryApiRequest {
 
-    @Email
+    @Email @NotEmpty
     private final String email;
 
     @JsonCreator
