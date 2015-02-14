@@ -58,7 +58,7 @@ public class UiApplicationTests {
                 + port + "/resource", String.class);
         String csrf = getCsrf(response.getHeaders());
         MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>();
-        form.set("username", "zoltan");
+        form.set("username", "altfatterz@gmail.com");
         form.set("password", "secret");
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-XSRF-TOKEN", csrf);
