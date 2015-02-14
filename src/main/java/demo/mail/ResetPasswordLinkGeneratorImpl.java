@@ -14,9 +14,6 @@ import java.time.format.DateTimeFormatter;
 @Service
 class ResetPasswordLinkGeneratorImpl implements ResetPasswordLinkGenerator {
 
-    @Value("${server.address}")
-    private String host;
-
     @Value("${server.port}")
     private String port;
 
@@ -38,7 +35,7 @@ class ResetPasswordLinkGeneratorImpl implements ResetPasswordLinkGenerator {
         String link = "";
         User user = userRepository.findByUsername(username);
         if (user != null) {
-            link = "http://" + host + ":" + port + "/v1/users/password/edit?reset_password_token=" + getPasswordResetToken(username);
+            link = "http://" + "localhost" + ":" + port + "/v1/users/password/edit?reset_password_token=" + getPasswordResetToken(username);
         }
         return link;
     }
