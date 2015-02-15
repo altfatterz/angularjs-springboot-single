@@ -4,12 +4,7 @@ import demo.user.User;
 import demo.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 class ResetPasswordLinkGeneratorImpl implements ResetPasswordLinkGenerator {
@@ -17,17 +12,13 @@ class ResetPasswordLinkGeneratorImpl implements ResetPasswordLinkGenerator {
     @Value("${server.port}")
     private String port;
 
-    @Value("${reset.password.link.password}")
-    private String encryptorPassword;
-
-    @Value("${reset.password.link.password}")
-    private String encryptorSecret;
-
     private final UserRepository userRepository;
+    private final ResetPasswordTokenHandler resetPasswordTokenHandler;
 
     @Autowired
-    ResetPasswordLinkGeneratorImpl(UserRepository userRepository) {
+    ResetPasswordLinkGeneratorImpl(UserRepository userRepository, ResetPasswordTokenHandler resetPasswordTokenHandler) {
         this.userRepository = userRepository;
+        this.resetPasswordTokenHandler = resetPasswordTokenHandler;
     }
 
     @Override
@@ -42,8 +33,7 @@ class ResetPasswordLinkGeneratorImpl implements ResetPasswordLinkGenerator {
 
 
     private String getPasswordResetToken(String username) {
-        TextEncryptor encryptor = Encryptors.queryableText(encryptorPassword, encryptorSecret);
-        return encryptor.encrypt(username + ":" + LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+        return resetPasswordTokenHandler.encrypt(username);
     }
 
 }
