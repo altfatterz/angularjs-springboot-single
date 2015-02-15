@@ -21,7 +21,7 @@ public class ChangePasswordController {
     }
 
     @RequestMapping("/users/password/edit")
-    public String check(@RequestParam String resetPasswordToken) {
+    public String check(@RequestParam("reset_password_token") String resetPasswordToken) {
         final UsernameDateTime usernameDateTime = resetPasswordTokenHandler.decrypt(resetPasswordToken);
         return usernameDateTime.getUsername() + "---" + usernameDateTime.getLocalDateTime();
     }
