@@ -36,6 +36,7 @@ public class PasswordRecoveryController {
 
         User user = userRepository.findByUsername(request.getEmail());
         if (user == null) {
+            LOGGER.warn("Could not find user with email address {}", request.getEmail());
             throw new SendMailException("Not registered user");
         }
 

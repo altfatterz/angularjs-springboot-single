@@ -1,6 +1,7 @@
 package demo;
 
 import demo.mail.ResetPasswordLinkExpiredException;
+import demo.mail.SendMailException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,6 +50,15 @@ class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     ErrorMessage handleException(ResetPasswordLinkExpiredException ex) {
+        List<String> errors = new ArrayList<String>();
+        errors.add(ex.getMessage());
+        return new ErrorMessage(errors);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ErrorMessage handleException(SendMailException ex) {
         List<String> errors = new ArrayList<String>();
         errors.add(ex.getMessage());
         return new ErrorMessage(errors);
