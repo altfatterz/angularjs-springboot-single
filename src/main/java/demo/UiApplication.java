@@ -67,10 +67,6 @@ public class UiApplication {
 
         @Autowired
         public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//            auth
-//                    .inMemoryAuthentication()
-//                    .withUser("zoltan").password("secret").roles("USER", "ADMIN");
-
              auth.userDetailsService(customUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());
         }
 
@@ -82,7 +78,7 @@ public class UiApplication {
 
             http
                     .authorizeRequests()
-                    .antMatchers("/", "/home.html", "/index.html", "/login.html", "/email.html", "/v1/**", "/bower_components/**").permitAll()
+                    .antMatchers("/", "/home.html", "/index.html", "/login.html", "/email.html", "/password.html", "/v1/**", "/bower_components/**").permitAll()
                         .anyRequest().authenticated()
                     .and()
                     .formLogin()
