@@ -1,37 +1,37 @@
-angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
+angular.module('hello', ['ngRoute']).config(function ($routeProvider) {
 
     $routeProvider.when('/', {
-        templateUrl : 'home.html',
-        controller : 'home'
+        templateUrl: 'home.html',
+        controller: 'home'
     }).when('/login', {
-        templateUrl : 'login.html',
-        controller : 'navigation'
+        templateUrl: 'login.html',
+        controller: 'navigation'
     }).when('/begin_password_recovery', {
-        templateUrl : 'email.html',
-        controller : 'PasswordRecoveryController'
+        templateUrl: 'email.html',
+        controller: 'PasswordRecoveryController'
     }).when('/change_password', {
-        templateUrl : 'password.html',
-        controller : 'ChangePasswordController'
+        templateUrl: 'password.html',
+        controller: 'ChangePasswordController'
     }).otherwise('/');
 
 }).controller('navigation',
 
-    function($rootScope, $scope, $http, $location, $route) {
+    function ($rootScope, $scope, $http, $location, $route) {
 
-        $scope.tab = function(route) {
+        $scope.tab = function (route) {
             return $route.current && route === $route.current.controller;
         };
 
-        var authenticate = function(callback) {
+        var authenticate = function (callback) {
 
-            $http.get('user').success(function(data) {
+            $http.get('user').success(function (data) {
                 if (data.name) {
                     $rootScope.authenticated = true;
                 } else {
                     $rootScope.authenticated = false;
                 }
                 callback && callback();
-            }).error(function() {
+            }).error(function () {
                 $rootScope.authenticated = false;
                 callback && callback();
             });
@@ -41,15 +41,15 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
         authenticate();
 
         $scope.credentials = {};
-        $scope.login = function() {
+        $scope.login = function () {
             var data = 'username=' + $scope.credentials.username + '&password=' + $scope.credentials.password +
-                    '&remember-me=' + $scope.rememberMe;
+                '&remember-me=' + $scope.rememberMe;
             $http.post('login', data, {
-                headers : {
-                    "content-type" : "application/x-www-form-urlencoded"
+                headers: {
+                    "content-type": "application/x-www-form-urlencoded"
                 }
-            }).success(function(data) {
-                authenticate(function() {
+            }).success(function (data) {
+                authenticate(function () {
                     if ($rootScope.authenticated) {
                         console.log("Login succeeded")
                         $location.path("/");
@@ -62,7 +62,7 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
                         $rootScope.authenticated = false;
                     }
                 });
-            }).error(function(data) {
+            }).error(function (data) {
                 console.log("Login failed")
                 $location.path("/login");
                 $scope.error = true;
@@ -70,53 +70,64 @@ angular.module('hello', [ 'ngRoute' ]).config(function($routeProvider) {
             })
         };
 
-        $scope.logout = function() {
-            $http.post('logout', {}).success(function() {
+        $scope.logout = function () {
+            $http.post('logout', {}).success(function () {
                 $rootScope.authenticated = false;
                 $location.path("/");
-            }).error(function(data) {
+            }).error(function (data) {
                 console.log("Logout failed")
                 $rootScope.authenticated = false;
             });
         }
 
-    }).controller('home', function($scope, $http) {
-        $http.get('/resource/').success(function(data) {
+    }).controller('home', function ($scope, $http) {
+        $http.get('/resource/').success(function (data) {
             $scope.greeting = data;
         })
     }).controller('PasswordRecoveryController',
 
-        function($scope, $http) {
+    function ($scope, $http) {
 
-            $scope.passwordRecovery = {};
+        $scope.passwordRecovery = {};
 
-            $scope.recoverPassword = function() {
+        $scope.recoverPassword = function () {
 
-                var req = {
-                    method: 'POST',
-                    url: '/v1/passwordRecovery',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: { email: $scope.passwordRecovery.email }
-                };
+            var req = {
+                method: 'POST',
+                url: '/v1/passwordRecovery',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {email: $scope.passwordRecovery.email}
+            };
 
-                $http(req)
-                    .success(function(){
-                        $scope.passwordRecovery.showConfirmationMessage = true;
-                    })
-                    .error(function(){
-                    });
+            $http(req)
+                .success(function () {
+                    $scope.passwordRecovery.showConfirmationMessage = true;
+                })
+                .error(function () {
+                });
 
-                $scope.passwordRecovery.email = '';
-                console.log("test");
+            $scope.passwordRecovery.email = '';
+            console.log("test");
+        }
+    }).controller('ChangePasswordController', function ($scope, $http, $window) {
+
+        $scope.changePasswordForm = {}
+
+        $scope.changePassword = function () {
+
+            if ($scope.changePasswordForm.newPassword != $scope.changePasswordForm.confirmPassword) {
+                $scope.changePasswordForm.showErrorMessage = true;
+            } else {
+                $scope.changePasswordForm.showErrorMessage = false;
+
+                // redirect to login page
+                $window.location.href = '#/login';
             }
-    }).controller('ChangePasswordController', function($scope, $http) {
 
-       $scope.changePassword = function() {
-            console.log("send change password request")
-       }
+        }
 
-       console.log('Haliho...')
+        console.log('Haliho...')
 
     });
